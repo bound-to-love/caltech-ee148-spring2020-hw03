@@ -234,6 +234,9 @@ def main():
     # Training loop
     for epoch in range(1, args.epochs + 1):
         train(args, model, device, train_loader, optimizer, epoch)
+        print("Accuracy on training set:")
+        test(model, device, train_loader)
+        print("Accuracy on validation set:")
         test(model, device, val_loader)
         scheduler.step()    # learning rate scheduler
 
