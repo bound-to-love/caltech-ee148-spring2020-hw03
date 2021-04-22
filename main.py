@@ -9,6 +9,7 @@ from torch.optim.lr_scheduler import StepLR
 from torch.utils.data.sampler import SubsetRandomSampler
 
 import os
+import numpy as np
 
 '''
 This code is adapted from two sources:
@@ -199,8 +200,18 @@ def main():
     # training by using SubsetRandomSampler. Right now the train and validation
     # sets are built from the same indices - this is bad! Change it so that
     # the training and validation sets are disjoint and have the correct relative sizes.
-    subset_indices_train = range(len(train_dataset))
-    subset_indices_valid = range(len(train_dataset))
+    indices = []
+    subset_indices_train = []
+    subset_indices_valid = []
+    np.random.seed(430)
+    for i in range(10):
+        indices.append([j for j in range(len(train_dataset)) if train_dataset[j][1] == i])
+        for index in indices[i]:
+            rand = np.random.rand()
+            if rand > .15:
+                subset_indices_train.append(index) 
+            else:
+                subset_indices_valid.append(index)
 
     train_loader = torch.utils.data.DataLoader(
         train_dataset, batch_size=args.batch_size,
