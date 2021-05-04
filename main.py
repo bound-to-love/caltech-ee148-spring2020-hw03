@@ -85,14 +85,14 @@ class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
         self.conv1 = nn.Conv2d(in_channels=1, out_channels=8, kernel_size=(4,4), stride=1)
-        self.conv2 = nn.Conv2d(8, 16, 3, 1)
-        self.conv3 = nn.Conv2d(16, 8, 2, 1)
+        self.conv2 = nn.Conv2d(8, 8, 3, 1)
+        self.conv3 = nn.Conv2d(8, 8, 2, 1)
         self.dropout1 = nn.Dropout2d(.5)
         self.dropout2 = nn.Dropout2d(.25)
         self.dropout3 = nn.Dropout2d(.125)
-        self.fc1 = nn.Linear(32, 28)
-        self.fc2 = nn.Linear(28, 20)
-        self.fc3 = nn.Linear(20, 10)
+        self.fc1 = nn.Linear(128, 64)
+        self.fc2 = nn.Linear(64, 32)
+        self.fc3 = nn.Linear(32, 10)
     def forward(self, x):
         x = self.conv1(x)
         x = F.relu(x)
@@ -101,7 +101,7 @@ class Net(nn.Module):
 
         x = self.conv2(x)
         x = F.relu(x)
-        x = F.avg_pool2d(x, 2)
+        #x = F.max_pool2d(x, 2)
         x = self.dropout2(x)
 
         x = self.conv3(x)
@@ -225,7 +225,7 @@ def main():
                 transform=transforms.Compose([       # Data preprocessing
                     #transforms.Resize((30,30)),
                     #transforms.RandomCrop((28,28)),
-                    transforms.RandomRotation(degrees=5),
+                    #transforms.RandomRotation(degrees=5),
                     #transforms.ColorJitter(brightness=.5),
                     transforms.ToTensor(),           # Add data augmentation here
                     transforms.Normalize((0.1307,), (0.3081,))
